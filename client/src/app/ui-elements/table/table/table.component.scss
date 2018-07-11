@@ -1,0 +1,25 @@
+  .table {
+    margin: 20px 0;
+    box-shadow: 0 2px 4px 1px rgba(0, 0, 0, .3);
+
+		&-row {
+			clear: both;
+			/* border-left: 1px solid #eee;
+			border-right: 1px solid #eee;
+			border-bottom: 1px solid #eee; */
+			padding: 8px 16px;
+			display: flex;
+			align-items: center;
+			/*color: #000;*/
+		}
+		&-row--grey { background-color: #eee; }
+		&-row--dark {
+			background-color: #333;
+			color: #fff;
+		}
+		&-col {
+			float: left;
+			text-align: center;
+			color: inherit;
+		}
+  }

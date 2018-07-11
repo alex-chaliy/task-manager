@@ -1,0 +1,24 @@
+<h5 [hidden]="_dataItems"> No data </h5>
+
+<div class="table">
+	<div class="table-head">
+		<div class="table-row table-row--dark">
+			<div class="table-col"
+				*ngFor="let col of _columns"
+				[ngStyle]="{'width': col.width + '%'}"
+			> {{ col.name }} </div>
+		</div>
+	</div>
+	<div class="table-body">
+		<div class="table-row" 
+			*ngFor="let item of _dataItems; let i = index"
+			[ngClass]="{'table-row--grey': i % 2 == 1}"
+		>
+			<div class="table-col"
+				*ngFor="let col of _columns"
+				[ngStyle]="{'width': col.width + '%'}"
+			> {{ item[col.mapTo] }} </div>
+		</div>
+	</div>
+</div>
+
