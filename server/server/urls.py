@@ -13,9 +13,19 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path
 
+from django.http import HttpResponse
+
+from server.controllers.task.TaskController import TaskController
+
 urlpatterns = [
+    url('test/', lambda request: HttpResponse('{ "statusText": "Hello Test" }', content_type='application/json')),
+
+    url('tasks/', TaskController['get_tasks']),
+
     path('admin/', admin.site.urls),
 ]
+
