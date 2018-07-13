@@ -1,7 +1,10 @@
 #!flask/bin/python
-from flask import Flask, jsonify
+import os
+
+from flask import Flask, jsonify, send_from_directory
 
 app = Flask(__name__)
+# app = Flask(__name__, static_url_path='')
 
 tasks = [
     {
@@ -16,8 +19,19 @@ tasks = [
 
 
 @app.route('/')
-def index():
-    return jsonify({'statusText': 'GET /tasks - OK', 'data': 'Index Page'})
+def root():
+    root_dir = os.path.dirname(os.getcwd())
+    path = os.path.join(root_dir, 'server', 'client', 'dist', 'client')
+    print(path)
+    return send_from_directory(path, 'index.html')
+
+
+@app.route('/<path:filename>')
+def serve_static(filename):
+    root_dir = os.path.dirname(os.getcwd())
+    path = os.path.join(root_dir, 'server', 'client', 'dist', 'client')
+    print(path)
+    return send_from_directory(path, filename)
 
 
 @app.route('/tasks', methods=['GET'])
