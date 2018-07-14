@@ -1,15 +1,15 @@
 #!flask/bin/python
 import os
+import string
 
 from flask import Flask, jsonify, send_from_directory
 
 app = Flask(__name__)
-# app = Flask(__name__, static_url_path='')
 
 tasks = [
     {
         'id': 1,
-        'description': 'qaqa qa'
+        'description': 'qa_qa qa'
     },
     {
         'id': 2,
@@ -18,25 +18,45 @@ tasks = [
 ]
 
 
-@app.route('/')
-def root():
-    root_dir = os.path.dirname(os.getcwd())
-    path = os.path.join(root_dir, 'server', 'client', 'dist', 'client')
-    print(path)
-    return send_from_directory(path, 'index.html')
+root_dir = os.path.dirname(os.getcwd())
+dist_path = os.path.join(root_dir, 'server', 'client', 'dist', 'client')
+
+
+@app.errorhandler(404)
+def root(a):
+    return send_from_directory(dist_path, 'index.html')
 
 
 @app.route('/<path:filename>')
 def serve_static(filename):
-    root_dir = os.path.dirname(os.getcwd())
-    path = os.path.join(root_dir, 'server', 'client', 'dist', 'client')
-    print(path)
-    return send_from_directory(path, filename)
+    return send_from_directory(dist_path, filename)
 
 
-@app.route('/tasks', methods=['GET'])
+@app.route('/api/tasks/<int:task_id>', methods=['DELETE'])
+def delete_task(task_id):
+    return jsonify({'statusText': 'DELETE /tasks/%d - OK' % task_id})
+
+
+@app.route('/api/tasks/<int:task_id>', methods=['PUT'])
+def update_task(task_id):
+    return jsonify({'statusText': 'PUT /tasks/%d - OK' % task_id})
+
+
+@app.route('/api/tasks', methods=['POST'])
+def add_task():
+    return jsonify({'statusText': 'POST /tasks - OK'})
+
+
+@app.route('/api/tasks', methods=['GET'])
 def get_tasks():
     return jsonify({'statusText': 'GET /tasks - OK', 'data': tasks})
 
+
+@app.route('/api/tasks/<int:task_id>', methods=['GET'])
+def get_task(task_id):
+    return jsonify({'statusText': 'GET /tasks/%d - OK' % task_id})
+
+
 if __name__ == '__main__':
     app.run(debug=True)
+
