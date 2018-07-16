@@ -1,21 +1,17 @@
 #!flask/bin/python
 import os
-import string
 
-from flask import Flask, jsonify, send_from_directory
+from flask import jsonify, send_from_directory
 
-app = Flask(__name__)
+from app_init import app, get_db_cursor
 
-tasks = [
-    {
-        'id': 1,
-        'description': 'qa_qa qa'
-    },
-    {
-        'id': 2,
-        'description': 'task 2'
-    }
-]
+from models.Task import Task
+taskModel = Task()
+
+
+from flask import request
+
+db_cursor = get_db_cursor()
 
 
 root_dir = os.path.dirname(os.getcwd())
@@ -34,27 +30,38 @@ def serve_static(filename):
 
 @app.route('/api/tasks/<int:task_id>', methods=['DELETE'])
 def delete_task(task_id):
-    return jsonify({'statusText': 'DELETE /tasks/%d - OK' % task_id})
+    rv = taskModel.delete(task_id)
+    return jsonify({'statusText': 'DELETE /tasks/%d - OK' % task_id, 'data': rv})
 
 
 @app.route('/api/tasks/<int:task_id>', methods=['PUT'])
 def update_task(task_id):
-    return jsonify({'statusText': 'PUT /tasks/%d - OK' % task_id})
+    task_data = request.get_json()
+    rv = taskModel.update(task_id, task_data)
+    return jsonify({'statusText': 'PUT /tasks/%d - OK' % task_id, 'data': rv})
 
 
 @app.route('/api/tasks', methods=['POST'])
 def add_task():
-    return jsonify({'statusText': 'POST /tasks - OK'})
+    data = request.get_json()
+
+    print('\n add_task : request body* \n', data)
+
+    rv = taskModel.create(data)
+
+    return jsonify({'statusText': 'POST /tasks - OK', 'data': rv})
 
 
 @app.route('/api/tasks', methods=['GET'])
 def get_tasks():
-    return jsonify({'statusText': 'GET /tasks - OK', 'data': tasks})
+    rv = taskModel.get_all()
+    return jsonify({'statusText': 'GET /tasks - OK', 'data': rv})
 
 
 @app.route('/api/tasks/<int:task_id>', methods=['GET'])
 def get_task(task_id):
-    return jsonify({'statusText': 'GET /tasks/%d - OK' % task_id})
+    rv = taskModel.get(task_id)
+    return jsonify({'statusText': 'GET /tasks/%d - OK' % task_id, 'data': rv})
 
 
 if __name__ == '__main__':
