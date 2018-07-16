@@ -21,7 +21,7 @@ export class MainPageComponent implements OnInit {
 
   ngOnInit() {
     this.taskColumns = this.columnService.getColumns('task');
-    this.taskService.getTasks()
+    this.taskService.getAll()
       .subscribe(tasks => this.tasks = tasks);
   }
 
