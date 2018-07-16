@@ -17,8 +17,69 @@
 			<div class="table-col"
 				*ngFor="let col of _columns"
 				[ngStyle]="{'width': col.width + '%'}"
-			> {{ item[col.mapTo] }} </div>
+			>
+				<span *ngIf="!col.action"> {{ item[col.mapTo] }} </span>
+
+				<button class="btnReset"
+					*ngIf="col.action == 'edit'"
+					title="Edit" 
+					(click)="startEdit(item)"
+				> {{ item[col.mapTo] }} </button>
+
+				<button class="btnReset"
+					*ngIf="col.action == 'delete'" 
+					title="Delete"
+					(click)="emitDelete(item, i)"
+				> {{ col.action }} </button>
+			</div>
 		</div>
+	
+		<button class="button button--green"
+			*ngIf="mode == ''"
+			(click)="startCreate()"
+		> Add </button>
 	</div>
 </div>
+
+<div class="table"
+	[hidden]="mode == ''"
+>
+	<div class="table-body">
+		<div class="table-row" 
+		>
+			<div class="table-col"
+				*ngFor="let col of _columns"
+				[ngStyle]="{'width': col.width + '%'}"
+			>
+				<input readonly
+					class="input--disabled"
+					*ngIf="!col.action"
+					[value]="itemToWrite[col.mapTo] || ''"
+				>
+
+				<input
+					*ngIf="col.action == 'edit'"
+					[(ngModel)]="itemToWrite[col.mapTo]"
+				>
+
+				<button class="btnReset"
+					*ngIf="col.action == 'delete' && mode == 'edit'" 
+					title="Delete"
+					(click)="emitDelete(itemToWrite, i)"
+				> {{ col.action }} </button>
+			</div>
+		</div>
+		
+		<button class="button button--blue"
+			*ngIf="mode == 'edit'"
+			(click)="emitUpdate(itemToWrite)"
+		> Save Updates </button>
+
+		<button class="button button--green"
+			*ngIf="mode == 'create'"
+			(click)="emitCreate(itemToWrite)"
+		> Save </button>
+	</div>
+</div>
+
 

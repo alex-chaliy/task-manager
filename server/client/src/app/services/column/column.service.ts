@@ -23,12 +23,14 @@ export class ColumnService {
           new Column({
             mapTo: 'description',
             name: 'Task',
-            width: 60
+            width: 60,
+            action: 'edit'
           }),
           new Column({
             mapTo: '',
             name: 'Clear All',
-            width: 20
+            width: 20,
+            action: 'delete'
           })
         ];
         break;

@@ -1,1 +1,1 @@
-export type TableComponentMode = 'edit' | 'create';
+export type TableComponentMode = '' | 'edit' | 'create';

@@ -25,4 +25,26 @@ export class MainPageComponent implements OnInit {
       .subscribe(tasks => this.tasks = tasks);
   }
 
+  delete(task: Task) {
+    this.taskService.delete(task.id)
+      .subscribe(task => {
+        console.log('deleted task : ', task);
+      });
+  }
+
+  update(task: Task) {
+    this.taskService.update(task.id, task)
+      .subscribe(task => {
+        console.log('updated task : ', task);
+      });
+  }
+
+  create(task: Task) {
+    this.taskService.create(task)
+      .subscribe(task => {
+        console.log('created task : ', task);
+        this.tasks.push(task);
+      });
+  }
+
 }

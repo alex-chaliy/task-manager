@@ -1,4 +1,7 @@
 <app-table
   [dataItems]="tasks"
   [columns]="taskColumns"
+  (onDelete)="delete($event)"
+  (onUpdate)="update($event)"
+  (onCreate)="create($event)"
 ></app-table>

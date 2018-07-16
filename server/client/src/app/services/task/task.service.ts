@@ -27,28 +27,28 @@ export class TaskService {
       })
   }
 
-  get(id: number): Observable<Task> {
+  get(id: string): Observable<Task> {
     return this.http.get(environment.host + '/api/tasks/' + id)
       .map((response: IBaseHttpResponse) => {
         return new Task(response.data[0]);
       })
   }
 
-  // create(task: Task): Observable<Task> {
-  //   return this.http.post(environment.host + '/api/tasks')
-  //     .map((response: IBaseHttpResponse) => {
-  //       return new Task(response.data[0]);
-  //     })
-  // }
+  create(task: Task): Observable<Task> {
+    return this.http.post(environment.host + '/api/tasks', task)
+      .map((response: IBaseHttpResponse) => {
+        return new Task(response.data[0]);
+      })
+  }
 
-  // update(id: number, task: Task): Observable<Task> {
-  //   return this.http.put(environment.host + '/api/tasks/' + id)
-  //     .map((response: IBaseHttpResponse) => {
-  //       return new Task(response.data[0]);
-  //     })
-  // }
+  update(id: string, task: Task): Observable<Task> {
+    return this.http.put(environment.host + '/api/tasks/' + id, task)
+      .map((response: IBaseHttpResponse) => {
+        return new Task(response.data[0]);
+      })
+  }
 
-  delete(id: number): Observable<Task> {
+  delete(id: string): Observable<Task> {
     return this.http.delete(environment.host + '/api/tasks/' + id)
       .map((response: IBaseHttpResponse) => {
         return new Task(response.data[0]);

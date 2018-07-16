@@ -1,3 +1,6 @@
+export type ColAction = '' | 'delete' | 'edit';
+
+
 export interface IColumn {
 	name: string;
 
@@ -8,4 +11,6 @@ export interface IColumn {
 	width: number; /**
 	 * @info: width in percents
 	 */
+
+	action?: ColAction;
 }

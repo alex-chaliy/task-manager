@@ -12,38 +12,50 @@ export class TableComponent implements OnInit {
   @Input('dataItems') _dataItems: any[];
   @Input('columns') _columns: Column[];
 
-  @Output('onDeleteAll') _onDeleteAll: EventEmitter<any>;
-  @Output('onDelete') _onDelete: EventEmitter<any>;
-  @Output('onUpdate') _onUpdate: EventEmitter<any>;
-  @Output('onCreate') _onCreate: EventEmitter<any>;
+  @Output('onDelete') _onDelete: EventEmitter<any> = new EventEmitter();
+  @Output('onUpdate') _onUpdate: EventEmitter<any> = new EventEmitter();
+  @Output('onCreate') _onCreate: EventEmitter<any> = new EventEmitter();
 
-  mode: TableComponentMode;
+  mode: TableComponentMode = '';
+
+  itemToWrite: any = {};
 
   constructor() { }
 
   ngOnInit() {
   }
 
-  deleteAll() {
-    this._onDelete.emit('All Deleted');
+  emitDelete(item: any, itemIndex: number) {
+    const r = confirm("Are you sure?");
+    if (r == true) {
+      console.log('emitDelete');
+      this._dataItems.splice(itemIndex, 1);
+      this._onDelete.emit(item);
+    }
   }
 
-  deleteItem(item: any, itemIndex: number) {
-    this._onDelete.emit(item);
-  }
-
-  startEdit() {
+  startEdit(item) {
+    console.log('startEdit');
     this.mode = 'edit';
+    this.itemToWrite = item;
   }
-  updateItem(item: any) {
+  emitUpdate(item: any) {
+    console.log('emitUpdate');
+    this.mode = '';
     this._onUpdate.emit(item);
+    this.itemToWrite = {};
   }
 
   startCreate() {
+    console.log('startCreate');
     this.mode = 'create';
+    this.itemToWrite = {};
   }
-  createItem(item: any) {
+  emitCreate(item: any) {
+    console.log('emitCreate');
+    this.mode = '';
     this._onCreate.emit(item);
+    this.itemToWrite = {};
   }
 
 }
